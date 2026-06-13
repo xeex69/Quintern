@@ -4,17 +4,26 @@
 import { useEffect, useState } from 'react';
 
 const QUERIES = {
-  isMobile:   '(max-width: 767px)',
-  isTablet:   '(min-width: 768px) and (max-width: 1023px)',
-  isDesktop:  '(min-width: 1024px)',
-  isLarge:    '(min-width: 1280px)',
-  isSmUp:     '(min-width: 640px)',
-  isMdUp:     '(min-width: 768px)',
-  isLgUp:     '(min-width: 1024px)',
+  isMobile: '(max-width: 767px)',
+  isTablet: '(min-width: 768px) and (max-width: 1023px)',
+  isDesktop: '(min-width: 1024px)',
+  isLarge: '(min-width: 1280px)',
+  isSmUp: '(min-width: 640px)',
+  isMdUp: '(min-width: 768px)',
+  isLgUp: '(min-width: 1024px)',
 };
 
 function getInitial() {
-  if (typeof window === 'undefined') return { isMobile: true, isTablet: false, isDesktop: false, isLarge: false, isSmUp: false, isMdUp: false, isLgUp: false };
+  if (typeof window === 'undefined')
+    return {
+      isMobile: true,
+      isTablet: false,
+      isDesktop: false,
+      isLarge: false,
+      isSmUp: false,
+      isMdUp: false,
+      isLgUp: false,
+    };
   const w = window.innerWidth;
   return {
     isMobile: w < 768,
@@ -36,7 +45,10 @@ export function useResponsive() {
       mq.addEventListener?.('change', handler);
       return { mq, handler };
     });
-    return () => queries.forEach(({ mq, handler }) => mq.removeEventListener?.('change', handler));
+    return () =>
+      queries.forEach(({ mq, handler }) =>
+        mq.removeEventListener?.('change', handler)
+      );
   }, []);
   return state;
 }

@@ -2,21 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      name="theme-color"
+      content="#4f46e5"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0b1220"
+      media="(prefers-color-scheme: dark)"
+    />
     <meta name="color-scheme" content="light dark" />
 
     <title>Uptoskills · Workforce Platform</title>
-    <meta name="description" content="Uptoskills is the home of structured intern programs — onboarding, attendance, ratings, project delivery, and team operations in one secure place." />
+    <meta
+      name="description"
+      content="Uptoskills is the home of structured intern programs — onboarding, attendance, ratings, project delivery, and team operations in one secure place."
+    />
     <meta name="application-name" content="InternOps" />
     <meta name="apple-mobile-web-app-title" content="InternOps" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Uptoskills · Workforce Platform" />
-    <meta property="og:description" content="Uptoskills is the home of structured intern programs — onboarding, attendance, ratings, project delivery, and team operations." />
+    <meta
+      property="og:description"
+      content="Uptoskills is the home of structured intern programs — onboarding, attendance, ratings, project delivery, and team operations."
+    />
     <meta property="og:type" content="website" />
 
     <!-- Icons. SVG first (sharp at any DPI), ico fallback. Both resolve to the
@@ -38,7 +58,6 @@
       unreachable.
     -->
 
-
     <!-- Preconnect to the API origin so the first request lands fast. -->
     <link rel="preconnect" href="http://localhost:5000" crossorigin />
 
@@ -47,19 +66,37 @@
       (function () {
         try {
           var t = localStorage.getItem('theme');
-          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          if (
+            t === 'dark' ||
+            (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          ) {
             document.documentElement.classList.add('dark');
           }
-        } catch (e) { /* SSR / private mode */ }
+        } catch (e) {
+          /* SSR / private mode */
+        }
       })();
     </script>
   </head>
   <body>
     <div id="root"></div>
     <noscript>
-      <div style="font-family:system-ui,sans-serif;padding:2rem;text-align:center;color:#18181b;background:#fafafa;min-height:100vh">
-        <h1 style="font-size:1.5rem;margin:0 0 0.5rem">JavaScript is required</h1>
-        <p style="color:#71717a;margin:0">InternOps is a SPA — please enable JavaScript and reload.</p>
+      <div
+        style="
+          font-family: system-ui, sans-serif;
+          padding: 2rem;
+          text-align: center;
+          color: #18181b;
+          background: #fafafa;
+          min-height: 100vh;
+        "
+      >
+        <h1 style="font-size: 1.5rem; margin: 0 0 0.5rem">
+          JavaScript is required
+        </h1>
+        <p style="color: #71717a; margin: 0">
+          InternOps is a SPA — please enable JavaScript and reload.
+        </p>
       </div>
     </noscript>
     <script type="module" src="/src/main.jsx"></script>

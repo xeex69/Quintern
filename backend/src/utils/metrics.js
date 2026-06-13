@@ -23,7 +23,8 @@ async function trackHttpMetrics(request, reply) {
   reply.raw.on('finish', () => {
     activeRequests.dec();
     const elapsedMs = Number(process.hrtime.bigint() - start) / 1e6;
-    const route = request.routerPath || request.routeOptions?.url || request.url;
+    const route =
+      request.routerPath || request.routeOptions?.url || request.url;
     httpRequestDurationMs
       .labels(request.method, route, reply.statusCode)
       .observe(elapsedMs);

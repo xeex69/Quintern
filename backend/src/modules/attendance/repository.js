@@ -16,8 +16,14 @@ async function markAttendance(userId, markedBy, date, status, remarks) {
 async function getAttendance(userId, from, to) {
   let q = 'SELECT * FROM attendance WHERE user_id=$1 AND deleted_at IS NULL';
   const params = [userId];
-  if (from) { q += ' AND date>=$2'; params.push(from); }
-  if (to) { q += ' AND date<=$'+(params.length+1); params.push(to); }
+  if (from) {
+    q += ' AND date>=$2';
+    params.push(from);
+  }
+  if (to) {
+    q += ' AND date<=$' + (params.length + 1);
+    params.push(to);
+  }
   const res = await pool.query(q, params);
   return res.rows;
 }
@@ -43,11 +49,19 @@ async function bulkMark(entries, markedBy) {
   try {
     await client.query('BEGIN');
     // Build VALUES ($1,$2,$3,$4,$5),($6,$7,$8,$9,$10),...
-    const placeholders = entries.map((_, i) => {
-      const base = i * 5;
-      return `($${base+1},$${base+2},$${base+3},$${base+4},$${base+5})`;
-    }).join(',');
-    const params = entries.flatMap((e) => [e.user_id, markedBy, e.date, e.status, e.remarks || null]);
+    const placeholders = entries
+      .map((_, i) => {
+        const base = i * 5;
+        return `($${base + 1},$${base + 2},$${base + 3},$${base + 4},$${base + 5})`;
+      })
+      .join(',');
+    const params = entries.flatMap((e) => [
+      e.user_id,
+      markedBy,
+      e.date,
+      e.status,
+      e.remarks || null,
+    ]);
     const sql = `INSERT INTO attendance (user_id, marked_by, date, status, remarks)
                  VALUES ${placeholders}
                  ON CONFLICT (user_id, date)

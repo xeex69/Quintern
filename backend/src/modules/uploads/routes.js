@@ -9,7 +9,13 @@ const config = require('../../config');
 
 // Allowed Content-Types. We don't trust this — the magic-bytes check below
 // is the real validator, since a Content-Type header is trivially spoofed.
-const ALLOWED_MIME = new Set(['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif']);
+const ALLOWED_MIME = new Set([
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/gif',
+]);
 const MAX_BYTES = config.maxFileSize || 5 * 1024 * 1024;
 
 // Returns a normalized extension based on verified magic bytes, or null if
@@ -18,14 +24,25 @@ const MAX_BYTES = config.maxFileSize || 5 * 1024 * 1024;
 function detectImageExt(buf) {
   if (!buf || buf.length < 8) return null;
   // PNG: 89 50 4E 47 0D 0A 1A 0A
-  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return '.png';
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47)
+    return '.png';
   // JPEG: FF D8 FF
   if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return '.jpg';
   // GIF: 47 49 46 38
-  if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x38) return '.gif';
+  if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x38)
+    return '.gif';
   // WebP: 52 49 46 46 ?? ?? ?? ?? 57 45 42 50
-  if (buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 &&
-      buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50) return '.webp';
+  if (
+    buf[0] === 0x52 &&
+    buf[1] === 0x49 &&
+    buf[2] === 0x46 &&
+    buf[3] === 0x46 &&
+    buf[8] === 0x57 &&
+    buf[9] === 0x45 &&
+    buf[10] === 0x42 &&
+    buf[11] === 0x50
+  )
+    return '.webp';
   return null;
 }
 
@@ -45,7 +62,11 @@ async function routes(fastify) {
     // Magic-bytes check — don't trust the Content-Type or extension.
     const ext = detectImageExt(buffer);
     if (!ext) {
-      return reply.status(400).send({ error: 'File content does not match a supported image format' });
+      return reply
+        .status(400)
+        .send({
+          error: 'File content does not match a supported image format',
+        });
     }
 
     const fileName = `avatar_${req.user.id}_${crypto.randomBytes(8).toString('hex')}${ext}`;
@@ -54,7 +75,10 @@ async function routes(fastify) {
     await fsp.writeFile(path.join(uploadPath, fileName), buffer);
 
     const url = `/api/uploads/file/${fileName}`;
-    await pool.query('UPDATE users SET avatar_url = $1 WHERE id = $2', [url, req.user.id]);
+    await pool.query('UPDATE users SET avatar_url = $1 WHERE id = $2', [
+      url,
+      req.user.id,
+    ]);
 
     return { success: true, avatar_url: url };
   });
@@ -81,7 +105,13 @@ async function routes(fastify) {
       return reply.status(404).send({ error: 'Not found' });
     }
     const ext = path.extname(safe).slice(1).toLowerCase();
-    const mime = { png: 'image/png', jpg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp' }[ext] || 'application/octet-stream';
+    const mime =
+      {
+        png: 'image/png',
+        jpg: 'image/jpeg',
+        gif: 'image/gif',
+        webp: 'image/webp',
+      }[ext] || 'application/octet-stream';
     reply.header('Content-Type', mime);
     reply.header('Cache-Control', 'private, max-age=300');
     return reply.send(fs.createReadStream(filePath));

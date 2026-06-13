@@ -1,4 +1,4 @@
-import api from './axios'
+import api from './axios';
 
 // Trigger a browser file download from a backend endpoint that streams a blob.
 // Centralized so we never have to repeat the URL.createObjectURL dance.

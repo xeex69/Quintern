@@ -40,7 +40,8 @@ describe('Environment Variable Validation Tests', () => {
     process.env.EMAIL_API_KEY = 'api-key';
     process.env.CSRF_SECRET = 'a-csrf-secret-of-sufficient-length';
     process.env.JWT_ACCESS_SECRET = 'a-jwt-access-secret-of-sufficient-length';
-    process.env.JWT_REFRESH_SECRET = 'a-jwt-refresh-secret-of-sufficient-length';
+    process.env.JWT_REFRESH_SECRET =
+      'a-jwt-refresh-secret-of-sufficient-length';
 
     validateEnv();
 
@@ -56,7 +57,9 @@ describe('Environment Variable Validation Tests', () => {
     validateEnv();
 
     expect(exitMock).toHaveBeenCalledWith(1);
-    expect(errorMock).toHaveBeenCalledWith(expect.stringContaining('JWT_SECRET'));
+    expect(errorMock).toHaveBeenCalledWith(
+      expect.stringContaining('JWT_SECRET')
+    );
   });
 
   it('terminates if JWT_SECRET is too short', () => {
@@ -67,7 +70,9 @@ describe('Environment Variable Validation Tests', () => {
     validateEnv();
 
     expect(exitMock).toHaveBeenCalledWith(1);
-    expect(errorMock).toHaveBeenCalledWith(expect.stringContaining('JWT_SECRET'));
+    expect(errorMock).toHaveBeenCalledWith(
+      expect.stringContaining('JWT_SECRET')
+    );
   });
 
   it('terminates if DATABASE_URL is missing', () => {
@@ -78,7 +83,9 @@ describe('Environment Variable Validation Tests', () => {
     validateEnv();
 
     expect(exitMock).toHaveBeenCalledWith(1);
-    expect(errorMock).toHaveBeenCalledWith(expect.stringContaining('DATABASE_URL'));
+    expect(errorMock).toHaveBeenCalledWith(
+      expect.stringContaining('DATABASE_URL')
+    );
   });
 
   it('terminates if a required variable is whitespace only', () => {
@@ -89,7 +96,9 @@ describe('Environment Variable Validation Tests', () => {
     validateEnv();
 
     expect(exitMock).toHaveBeenCalledWith(1);
-    expect(errorMock).toHaveBeenCalledWith(expect.stringContaining('JWT_SECRET'));
+    expect(errorMock).toHaveBeenCalledWith(
+      expect.stringContaining('JWT_SECRET')
+    );
   });
 
   it('requires CSRF_SECRET in production', () => {
@@ -101,7 +110,9 @@ describe('Environment Variable Validation Tests', () => {
     validateEnv();
 
     expect(exitMock).toHaveBeenCalledWith(1);
-    expect(errorMock).toHaveBeenCalledWith(expect.stringContaining('CSRF_SECRET'));
+    expect(errorMock).toHaveBeenCalledWith(
+      expect.stringContaining('CSRF_SECRET')
+    );
   });
 
   it('prints warnings but does not terminate when optionals missing', () => {

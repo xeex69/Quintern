@@ -11,43 +11,265 @@ const DEPARTMENTS = [
 ];
 
 const USERS = [
-  { email: 'aanya.s@internops.com', full_name: 'Aanya Sharma', role: 'SENIOR_TL', department: 'Engineering', phone: '+91 98101 11111', location: 'Bengaluru', notes: 'Owns the Engineering org line.' },
-  { email: 'rohan.v@internops.com', full_name: 'Rohan Verma', role: 'TL', department: 'Engineering', manager_email: 'aanya.s@internops.com', phone: '+91 98101 22222', location: 'Bengaluru' },
-  { email: 'priya.i@internops.com', full_name: 'Priya Iyer', role: 'CAPTAIN', department: 'Engineering', manager_email: 'rohan.v@internops.com', phone: '+91 98101 33333', location: 'Pune' },
-  { email: 'karan.s@internops.com', full_name: 'Karan Singh', role: 'CAPTAIN', department: 'Engineering', manager_email: 'rohan.v@internops.com', phone: '+91 98101 33344', location: 'Delhi' },
-  { email: 'neha.k@internops.com', full_name: 'Neha Kapoor', role: 'TL', department: 'Marketing', manager_email: 'aanya.s@internops.com', phone: '+91 98101 44444', location: 'Mumbai' },
-  { email: 'vikram.m@internops.com', full_name: 'Vikram Mehta', role: 'SENIOR_TL', department: 'Design', phone: '+91 98101 55555', location: 'Hyderabad' },
-  { email: 'isha.r@internops.com', full_name: 'Isha Roy', role: 'CAPTAIN', department: 'Design', manager_email: 'vikram.m@internops.com', phone: '+91 98101 66666', location: 'Bengaluru' },
+  {
+    email: 'aanya.s@internops.com',
+    full_name: 'Aanya Sharma',
+    role: 'SENIOR_TL',
+    department: 'Engineering',
+    phone: '+91 98101 11111',
+    location: 'Bengaluru',
+    notes: 'Owns the Engineering org line.',
+  },
+  {
+    email: 'rohan.v@internops.com',
+    full_name: 'Rohan Verma',
+    role: 'TL',
+    department: 'Engineering',
+    manager_email: 'aanya.s@internops.com',
+    phone: '+91 98101 22222',
+    location: 'Bengaluru',
+  },
+  {
+    email: 'priya.i@internops.com',
+    full_name: 'Priya Iyer',
+    role: 'CAPTAIN',
+    department: 'Engineering',
+    manager_email: 'rohan.v@internops.com',
+    phone: '+91 98101 33333',
+    location: 'Pune',
+  },
+  {
+    email: 'karan.s@internops.com',
+    full_name: 'Karan Singh',
+    role: 'CAPTAIN',
+    department: 'Engineering',
+    manager_email: 'rohan.v@internops.com',
+    phone: '+91 98101 33344',
+    location: 'Delhi',
+  },
+  {
+    email: 'neha.k@internops.com',
+    full_name: 'Neha Kapoor',
+    role: 'TL',
+    department: 'Marketing',
+    manager_email: 'aanya.s@internops.com',
+    phone: '+91 98101 44444',
+    location: 'Mumbai',
+  },
+  {
+    email: 'vikram.m@internops.com',
+    full_name: 'Vikram Mehta',
+    role: 'SENIOR_TL',
+    department: 'Design',
+    phone: '+91 98101 55555',
+    location: 'Hyderabad',
+  },
+  {
+    email: 'isha.r@internops.com',
+    full_name: 'Isha Roy',
+    role: 'CAPTAIN',
+    department: 'Design',
+    manager_email: 'vikram.m@internops.com',
+    phone: '+91 98101 66666',
+    location: 'Bengaluru',
+  },
 
-  { email: 'arjun.n@internops.com', full_name: 'Arjun Nair', role: 'INTERN', department: 'Engineering', manager_email: 'priya.i@internops.com', college: 'IIT Bombay', course: 'B.Tech CSE', year_of_study: '3rd Year', position: 'Backend Intern', location: 'Bengaluru', joining_date: '2026-01-15' },
-  { email: 'meera.p@internops.com', full_name: 'Meera Pillai', role: 'INTERN', department: 'Engineering', manager_email: 'priya.i@internops.com', college: 'NIT Trichy', course: 'B.Tech IT', year_of_study: '4th Year', position: 'Frontend Intern', location: 'Chennai', joining_date: '2026-02-01' },
-  { email: 'dev.d@internops.com', full_name: 'Dev Das', role: 'INTERN', department: 'Engineering', manager_email: 'karan.s@internops.com', college: 'BITS Pilani', course: 'M.Sc. Data Science', year_of_study: '1st Year', position: 'ML Intern', location: 'Remote', joining_date: '2026-01-20' },
-  { email: 'sara.k@internops.com', full_name: 'Sara Khan', role: 'INTERN', department: 'Engineering', manager_email: 'karan.s@internops.com', college: 'VIT Vellore', course: 'B.Tech CSE', year_of_study: '3rd Year', position: 'DevOps Intern', location: 'Remote', joining_date: '2026-02-10' },
-  { email: 'rahul.g@internops.com', full_name: 'Rahul Gupta', role: 'INTERN', department: 'Marketing', manager_email: 'neha.k@internops.com', college: 'Christ University', course: 'BBA', year_of_study: '2nd Year', position: 'Growth Intern', location: 'Delhi', joining_date: '2026-01-25' },
-  { email: 'tanya.b@internops.com', full_name: 'Tanya Bhatt', role: 'INTERN', department: 'Marketing', manager_email: 'neha.k@internops.com', college: 'Symbiosis', course: 'BBA Marketing', year_of_study: '3rd Year', position: 'Content Intern', location: 'Pune', joining_date: '2026-02-05' },
-  { email: 'kabir.j@internops.com', full_name: 'Kabir Joshi', role: 'INTERN', department: 'Design', manager_email: 'isha.r@internops.com', college: 'NID Ahmedabad', course: 'B.Des', year_of_study: '4th Year', position: 'Product Design Intern', location: 'Ahmedabad', joining_date: '2026-01-10' },
-  { email: 'aisha.m@internops.com', full_name: 'Aisha Mohammed', role: 'INTERN', department: 'Design', manager_email: 'isha.r@internops.com', college: 'Srishti Manipal', course: 'B.Des Visual Comm.', year_of_study: '3rd Year', position: 'Brand Design Intern', location: 'Bengaluru', joining_date: '2026-02-12' },
+  {
+    email: 'arjun.n@internops.com',
+    full_name: 'Arjun Nair',
+    role: 'INTERN',
+    department: 'Engineering',
+    manager_email: 'priya.i@internops.com',
+    college: 'IIT Bombay',
+    course: 'B.Tech CSE',
+    year_of_study: '3rd Year',
+    position: 'Backend Intern',
+    location: 'Bengaluru',
+    joining_date: '2026-01-15',
+  },
+  {
+    email: 'meera.p@internops.com',
+    full_name: 'Meera Pillai',
+    role: 'INTERN',
+    department: 'Engineering',
+    manager_email: 'priya.i@internops.com',
+    college: 'NIT Trichy',
+    course: 'B.Tech IT',
+    year_of_study: '4th Year',
+    position: 'Frontend Intern',
+    location: 'Chennai',
+    joining_date: '2026-02-01',
+  },
+  {
+    email: 'dev.d@internops.com',
+    full_name: 'Dev Das',
+    role: 'INTERN',
+    department: 'Engineering',
+    manager_email: 'karan.s@internops.com',
+    college: 'BITS Pilani',
+    course: 'M.Sc. Data Science',
+    year_of_study: '1st Year',
+    position: 'ML Intern',
+    location: 'Remote',
+    joining_date: '2026-01-20',
+  },
+  {
+    email: 'sara.k@internops.com',
+    full_name: 'Sara Khan',
+    role: 'INTERN',
+    department: 'Engineering',
+    manager_email: 'karan.s@internops.com',
+    college: 'VIT Vellore',
+    course: 'B.Tech CSE',
+    year_of_study: '3rd Year',
+    position: 'DevOps Intern',
+    location: 'Remote',
+    joining_date: '2026-02-10',
+  },
+  {
+    email: 'rahul.g@internops.com',
+    full_name: 'Rahul Gupta',
+    role: 'INTERN',
+    department: 'Marketing',
+    manager_email: 'neha.k@internops.com',
+    college: 'Christ University',
+    course: 'BBA',
+    year_of_study: '2nd Year',
+    position: 'Growth Intern',
+    location: 'Delhi',
+    joining_date: '2026-01-25',
+  },
+  {
+    email: 'tanya.b@internops.com',
+    full_name: 'Tanya Bhatt',
+    role: 'INTERN',
+    department: 'Marketing',
+    manager_email: 'neha.k@internops.com',
+    college: 'Symbiosis',
+    course: 'BBA Marketing',
+    year_of_study: '3rd Year',
+    position: 'Content Intern',
+    location: 'Pune',
+    joining_date: '2026-02-05',
+  },
+  {
+    email: 'kabir.j@internops.com',
+    full_name: 'Kabir Joshi',
+    role: 'INTERN',
+    department: 'Design',
+    manager_email: 'isha.r@internops.com',
+    college: 'NID Ahmedabad',
+    course: 'B.Des',
+    year_of_study: '4th Year',
+    position: 'Product Design Intern',
+    location: 'Ahmedabad',
+    joining_date: '2026-01-10',
+  },
+  {
+    email: 'aisha.m@internops.com',
+    full_name: 'Aisha Mohammed',
+    role: 'INTERN',
+    department: 'Design',
+    manager_email: 'isha.r@internops.com',
+    college: 'Srishti Manipal',
+    course: 'B.Des Visual Comm.',
+    year_of_study: '3rd Year',
+    position: 'Brand Design Intern',
+    location: 'Bengaluru',
+    joining_date: '2026-02-12',
+  },
 ];
 
 const TASKS = [
-  { title: 'Share InternOps launch post on LinkedIn', description: 'Post a thoughtful commentary with the launch link on your LinkedIn profile. Tag the company page.', target_platform: 'LinkedIn', task_link: 'https://www.linkedin.com/company/internops', daysFromNow: 4 },
-  { title: 'Star the InternOps GitHub repo + follow', description: 'Star the public InternOps repository on GitHub and submit a screenshot of the notifications tab.', target_platform: 'GitHub', task_link: 'https://github.com/rajat-wyrm/InternOps', daysFromNow: 3 },
-  { title: 'Tweet about your week-1 learnings', description: 'Share a 280-character tweet on X/Twitter with the #InternOps hashtag.', target_platform: 'Twitter', task_link: '', daysFromNow: 2 },
-  { title: 'Publish a blog: My First Sprint at InternOps', description: 'Write a 600+ word Medium article about your first sprint, embed at least one screenshot.', target_platform: 'Medium', task_link: '', daysFromNow: 9 },
-  { title: 'Instagram Reel: A day in the InternOps life', description: '30-second reel showing your workspace and stack. Use the official audio.', target_platform: 'Instagram', task_link: '', daysFromNow: 12 },
+  {
+    title: 'Share InternOps launch post on LinkedIn',
+    description:
+      'Post a thoughtful commentary with the launch link on your LinkedIn profile. Tag the company page.',
+    target_platform: 'LinkedIn',
+    task_link: 'https://www.linkedin.com/company/internops',
+    daysFromNow: 4,
+  },
+  {
+    title: 'Star the InternOps GitHub repo + follow',
+    description:
+      'Star the public InternOps repository on GitHub and submit a screenshot of the notifications tab.',
+    target_platform: 'GitHub',
+    task_link: 'https://github.com/rajat-wyrm/InternOps',
+    daysFromNow: 3,
+  },
+  {
+    title: 'Tweet about your week-1 learnings',
+    description:
+      'Share a 280-character tweet on X/Twitter with the #InternOps hashtag.',
+    target_platform: 'Twitter',
+    task_link: '',
+    daysFromNow: 2,
+  },
+  {
+    title: 'Publish a blog: My First Sprint at InternOps',
+    description:
+      'Write a 600+ word Medium article about your first sprint, embed at least one screenshot.',
+    target_platform: 'Medium',
+    task_link: '',
+    daysFromNow: 9,
+  },
+  {
+    title: 'Instagram Reel: A day in the InternOps life',
+    description:
+      '30-second reel showing your workspace and stack. Use the official audio.',
+    target_platform: 'Instagram',
+    task_link: '',
+    daysFromNow: 12,
+  },
 ];
 
 const MEETINGS = [
-  { title: 'Engineering Weekly Sync', description: 'Standup-style: wins, blockers, demo.', daysFromNow: 1, hour: 10, attendees_role: 'ENGINEERING', department: 'Engineering' },
-  { title: 'Marketing Retro', description: 'Review last month\'s campaign metrics.', daysFromNow: 3, hour: 15, attendees_role: 'MARKETING', department: 'Marketing' },
-  { title: 'All-hands Townhall', description: 'Org update + Q&A with leadership.', daysFromNow: 7, hour: 17, attendees_role: 'ALL', department: null },
-  { title: 'Design Critique', description: 'Walk-through of the new dashboard screens.', daysFromNow: 2, hour: 11, attendees_role: 'DESIGN', department: 'Design' },
-  { title: 'Intern Onboarding Replay (past)', description: 'Catch-up session for the latest batch.', daysFromNow: -5, hour: 14, attendees_role: 'INTERNS', department: null },
+  {
+    title: 'Engineering Weekly Sync',
+    description: 'Standup-style: wins, blockers, demo.',
+    daysFromNow: 1,
+    hour: 10,
+    attendees_role: 'ENGINEERING',
+    department: 'Engineering',
+  },
+  {
+    title: 'Marketing Retro',
+    description: "Review last month's campaign metrics.",
+    daysFromNow: 3,
+    hour: 15,
+    attendees_role: 'MARKETING',
+    department: 'Marketing',
+  },
+  {
+    title: 'All-hands Townhall',
+    description: 'Org update + Q&A with leadership.',
+    daysFromNow: 7,
+    hour: 17,
+    attendees_role: 'ALL',
+    department: null,
+  },
+  {
+    title: 'Design Critique',
+    description: 'Walk-through of the new dashboard screens.',
+    daysFromNow: 2,
+    hour: 11,
+    attendees_role: 'DESIGN',
+    department: 'Design',
+  },
+  {
+    title: 'Intern Onboarding Replay (past)',
+    description: 'Catch-up session for the latest batch.',
+    daysFromNow: -5,
+    hour: 14,
+    attendees_role: 'INTERNS',
+    department: null,
+  },
 ];
 
 const NOTIFICATION_TEMPLATES = {
   ATTENDANCE_MARKED: (by) => `Your attendance was marked PRESENT by ${by}.`,
-  RATING_RECEIVED: (by, score) => `You received a new rating (${score}/5) from ${by}.`,
+  RATING_RECEIVED: (by, score) =>
+    `You received a new rating (${score}/5) from ${by}.`,
   TASK_ASSIGNED: (title) => `A new social task was assigned: ${title}.`,
   TASK_VERIFIED: (by) => `Your task submission was verified by ${by}.`,
   MEETING_INVITED: (title) => `You were invited to: ${title}.`,
@@ -68,19 +290,38 @@ function isoDateTime(offsetDays, hour) {
 
 async function cleanDemo(client) {
   // Keep the seeded admin; wipe everything else for a clean visual-test state.
-  await client.query(`DELETE FROM meeting_attendees WHERE meeting_id IN (SELECT id FROM meetings WHERE created_by <> (SELECT id FROM users WHERE email='admin@internops.com' AND deleted_at IS NULL) OR created_by IS NULL)`);
-  await client.query(`DELETE FROM meetings WHERE created_by <> (SELECT id FROM users WHERE email='admin@internops.com' AND deleted_at IS NULL) OR created_by IS NULL`);
+  await client.query(
+    `DELETE FROM meeting_attendees WHERE meeting_id IN (SELECT id FROM meetings WHERE created_by <> (SELECT id FROM users WHERE email='admin@internops.com' AND deleted_at IS NULL) OR created_by IS NULL)`
+  );
+  await client.query(
+    `DELETE FROM meetings WHERE created_by <> (SELECT id FROM users WHERE email='admin@internops.com' AND deleted_at IS NULL) OR created_by IS NULL`
+  );
 
-  await client.query(`DELETE FROM notifications WHERE user_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`);
+  await client.query(
+    `DELETE FROM notifications WHERE user_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`
+  );
 
-  await client.query(`DELETE FROM proof_submissions WHERE intern_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`);
-  await client.query(`DELETE FROM social_tasks WHERE created_by IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`);
+  await client.query(
+    `DELETE FROM proof_submissions WHERE intern_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`
+  );
+  await client.query(
+    `DELETE FROM social_tasks WHERE created_by IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`
+  );
 
-  await client.query(`DELETE FROM ratings WHERE rated_user_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL) OR rated_by IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`);
-  await client.query(`DELETE FROM attendance WHERE user_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`);
+  await client.query(
+    `DELETE FROM ratings WHERE rated_user_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL) OR rated_by IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`
+  );
+  await client.query(
+    `DELETE FROM attendance WHERE user_id IN (SELECT id FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL)`
+  );
 
-  await client.query(`DELETE FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL`);
-  await client.query(`DELETE FROM departments WHERE name NOT IN (SELECT DISTINCT name FROM departments WHERE name = ANY($1::text[]))`, [DEPARTMENTS.map(d => d.name)]);
+  await client.query(
+    `DELETE FROM users WHERE email <> 'admin@internops.com' AND deleted_at IS NULL`
+  );
+  await client.query(
+    `DELETE FROM departments WHERE name NOT IN (SELECT DISTINCT name FROM departments WHERE name = ANY($1::text[]))`,
+    [DEPARTMENTS.map((d) => d.name)]
+  );
 }
 
 async function upsertDepartments(client) {
@@ -126,10 +367,19 @@ async function upsertUsers(client, deptMap) {
          deleted_at = NULL
        RETURNING id, email`,
       [
-        u.email, passwordHash, u.role, u.full_name, deptId,
-        u.phone || null, u.college || null, u.course || null,
-        u.year_of_study || null, u.position || null, u.location || null,
-        u.joining_date || null, u.notes || null
+        u.email,
+        passwordHash,
+        u.role,
+        u.full_name,
+        deptId,
+        u.phone || null,
+        u.college || null,
+        u.course || null,
+        u.year_of_study || null,
+        u.position || null,
+        u.location || null,
+        u.joining_date || null,
+        u.notes || null,
       ]
     );
     userMap.set(u.email, r.rows[0].id);
@@ -139,13 +389,16 @@ async function upsertUsers(client, deptMap) {
     if (!u.manager_email) continue;
     const mgrId = userMap.get(u.manager_email);
     if (!mgrId) continue;
-    await client.query(`UPDATE users SET manager_id = $1 WHERE id = $2`, [mgrId, userMap.get(u.email)]);
+    await client.query(`UPDATE users SET manager_id = $1 WHERE id = $2`, [
+      mgrId,
+      userMap.get(u.email),
+    ]);
   }
   return userMap;
 }
 
 async function seedAttendance(client, userMap) {
-  const interns = USERS.filter(u => u.role === 'INTERN');
+  const interns = USERS.filter((u) => u.role === 'INTERN');
   for (const intern of interns) {
     const internId = userMap.get(intern.email);
     const captainId = userMap.get(intern.manager_email);
@@ -159,22 +412,27 @@ async function seedAttendance(client, userMap) {
       // 80% PRESENT, 12% ABSENT, 8% HALF_DAY
       const r = Math.random();
       const status = r < 0.8 ? 'PRESENT' : r < 0.92 ? 'ABSENT' : 'HALF_DAY';
-      const remarks = status === 'ABSENT' ? 'No-show, no leave intimation' :
-                      status === 'HALF_DAY' ? 'Left early — personal commitment' :
-                      Math.random() < 0.2 ? 'On-time, productive day' : null;
+      const remarks =
+        status === 'ABSENT'
+          ? 'No-show, no leave intimation'
+          : status === 'HALF_DAY'
+            ? 'Left early — personal commitment'
+            : Math.random() < 0.2
+              ? 'On-time, productive day'
+              : null;
 
       await client.query(
         `INSERT INTO attendance (user_id, marked_by, date, status, remarks)
          VALUES ($1,$2,$3,$4,$5)
          ON CONFLICT (user_id, date) DO UPDATE SET status = EXCLUDED.status, remarks = EXCLUDED.remarks`,
-        [internId, captainId, d.toISOString().slice(0,10), status, remarks]
+        [internId, captainId, d.toISOString().slice(0, 10), status, remarks]
       );
     }
   }
 }
 
 async function seedRatings(client, userMap) {
-  const interns = USERS.filter(u => u.role === 'INTERN');
+  const interns = USERS.filter((u) => u.role === 'INTERN');
   const remarksPool = [
     'Consistently delivers above expectations.',
     'Strong technical communication in standups.',
@@ -190,9 +448,12 @@ async function seedRatings(client, userMap) {
     const count = 2 + Math.floor(Math.random() * 2); // 2-3 ratings
     for (let i = 0; i < count; i++) {
       const score = 3 + Math.floor(Math.random() * 3); // 3..5
-      const remarks = remarksPool[Math.floor(Math.random() * remarksPool.length)];
+      const remarks =
+        remarksPool[Math.floor(Math.random() * remarksPool.length)];
       const d = new Date();
-      d.setUTCDate(d.getUTCDate() - (5 + i * 14 + Math.floor(Math.random() * 5)));
+      d.setUTCDate(
+        d.getUTCDate() - (5 + i * 14 + Math.floor(Math.random() * 5))
+      );
       await client.query(
         `INSERT INTO ratings (rated_user_id, rated_by, score, remarks, created_at)
          VALUES ($1,$2,$3,$4,$5)`,
@@ -203,18 +464,28 @@ async function seedRatings(client, userMap) {
 }
 
 async function seedTasksAndProofs(client, userMap) {
-  const seniorsAndTls = USERS.filter(u => ['SENIOR_TL', 'ADMIN'].includes(u.role));
-  const captains = USERS.filter(u => u.role === 'CAPTAIN');
-  const interns = USERS.filter(u => u.role === 'INTERN');
+  const seniorsAndTls = USERS.filter((u) =>
+    ['SENIOR_TL', 'ADMIN'].includes(u.role)
+  );
+  const captains = USERS.filter((u) => u.role === 'CAPTAIN');
+  const interns = USERS.filter((u) => u.role === 'INTERN');
   const taskIdMap = new Map();
 
   for (const t of TASKS) {
-    const creatorEmail = seniorsAndTls[Math.floor(Math.random() * seniorsAndTls.length)].email;
+    const creatorEmail =
+      seniorsAndTls[Math.floor(Math.random() * seniorsAndTls.length)].email;
     const creatorId = userMap.get(creatorEmail);
     const r = await client.query(
       `INSERT INTO social_tasks (title, description, target_platform, task_link, deadline, created_by)
        VALUES ($1,$2,$3,$4,$5,$6) RETURNING id`,
-      [t.title, t.description, t.target_platform, t.task_link || null, isoDateTime(t.daysFromNow, 23), creatorId]
+      [
+        t.title,
+        t.description,
+        t.target_platform,
+        t.task_link || null,
+        isoDateTime(t.daysFromNow, 23),
+        creatorId,
+      ]
     );
     taskIdMap.set(t.title, r.rows[0].id);
   }
@@ -223,11 +494,18 @@ async function seedTasksAndProofs(client, userMap) {
   for (const intern of interns) {
     const internId = userMap.get(intern.email);
     const captainId = userMap.get(intern.manager_email);
-    const shuffledTasks = [...TASKS].sort(() => Math.random() - 0.5).slice(0, 3);
+    const shuffledTasks = [...TASKS]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
     for (const t of shuffledTasks) {
       const taskId = taskIdMap.get(t.title);
       const statusRoll = Math.random();
-      const status = statusRoll < 0.4 ? 'PENDING' : statusRoll < 0.75 ? 'VERIFIED' : 'REJECTED';
+      const status =
+        statusRoll < 0.4
+          ? 'PENDING'
+          : statusRoll < 0.75
+            ? 'VERIFIED'
+            : 'REJECTED';
       const imagePath = `/uploads/proofs/demo_${intern.email.split('@')[0]}_${t.target_platform.toLowerCase()}.png`;
       const verifiedBy = status === 'PENDING' ? null : captainId;
       const verifiedAt = status === 'PENDING' ? null : new Date().toISOString();
@@ -241,28 +519,41 @@ async function seedTasksAndProofs(client, userMap) {
 }
 
 async function seedMeetings(client, userMap) {
-  const seniors = USERS.filter(u => ['SENIOR_TL', 'ADMIN'].includes(u.role));
-  const deptMap = (await client.query(`SELECT id, name FROM departments`)).rows.reduce((acc, r) => (acc[r.name] = r.id, acc), {});
+  const seniors = USERS.filter((u) => ['SENIOR_TL', 'ADMIN'].includes(u.role));
+  const deptMap = (
+    await client.query(`SELECT id, name FROM departments`)
+  ).rows.reduce((acc, r) => ((acc[r.name] = r.id), acc), {});
 
   for (const m of MEETINGS) {
-    const creatorEmail = seniors[Math.floor(Math.random() * seniors.length)].email;
+    const creatorEmail =
+      seniors[Math.floor(Math.random() * seniors.length)].email;
     const creatorId = userMap.get(creatorEmail);
     const deptId = m.department ? deptMap[m.department] : null;
     const r = await client.query(
       `INSERT INTO meetings (title, description, meeting_date, start_time, end_time, created_by, department_id)
        VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
-      [m.title, m.description, isoDate(m.daysFromNow), `${String(m.hour).padStart(2,'0')}:00:00`, `${String(m.hour+1).padStart(2,'0')}:00:00`, creatorId, deptId]
+      [
+        m.title,
+        m.description,
+        isoDate(m.daysFromNow),
+        `${String(m.hour).padStart(2, '0')}:00:00`,
+        `${String(m.hour + 1).padStart(2, '0')}:00:00`,
+        creatorId,
+        deptId,
+      ]
     );
     const meetingId = r.rows[0].id;
 
     // Pick attendees by rule
     let attendees = [];
     if (m.attendees_role === 'ALL') {
-      attendees = USERS.map(u => u.email);
+      attendees = USERS.map((u) => u.email);
     } else if (m.attendees_role === 'INTERNS') {
-      attendees = USERS.filter(u => u.role === 'INTERN').map(u => u.email);
+      attendees = USERS.filter((u) => u.role === 'INTERN').map((u) => u.email);
     } else if (m.department) {
-      attendees = USERS.filter(u => u.department === m.department).map(u => u.email);
+      attendees = USERS.filter((u) => u.department === m.department).map(
+        (u) => u.email
+      );
     }
     for (const email of attendees) {
       const uid = userMap.get(email);
@@ -278,35 +569,61 @@ async function seedMeetings(client, userMap) {
 async function seedNotifications(client, userMap) {
   for (const u of USERS) {
     const userId = userMap.get(u.email);
-    const manager = USERS.find(m => m.email === u.manager_email);
+    const manager = USERS.find((m) => m.email === u.manager_email);
     const managerName = manager ? manager.full_name : 'Admin';
 
     // Attendance notification (last 2 days)
     await client.query(
       `INSERT INTO notifications (user_id, message, read, created_at) VALUES ($1,$2,FALSE,$3)`,
-      [userId, NOTIFICATION_TEMPLATES.ATTENDANCE_MARKED(managerName), new Date(Date.now() - 1 * 86400000).toISOString()]
+      [
+        userId,
+        NOTIFICATION_TEMPLATES.ATTENDANCE_MARKED(managerName),
+        new Date(Date.now() - 1 * 86400000).toISOString(),
+      ]
     );
     // Rating notification
     if (u.role === 'INTERN') {
       await client.query(
         `INSERT INTO notifications (user_id, message, read, created_at) VALUES ($1,$2,$3,$4)`,
-        [userId, NOTIFICATION_TEMPLATES.RATING_RECEIVED(managerName, 4), Math.random() < 0.4, new Date(Date.now() - 3 * 86400000).toISOString()]
+        [
+          userId,
+          NOTIFICATION_TEMPLATES.RATING_RECEIVED(managerName, 4),
+          Math.random() < 0.4,
+          new Date(Date.now() - 3 * 86400000).toISOString(),
+        ]
       );
     }
     // Meeting invited
     await client.query(
       `INSERT INTO notifications (user_id, message, read, created_at) VALUES ($1,$2,$3,$4)`,
-      [userId, NOTIFICATION_TEMPLATES.MEETING_INVITED('Engineering Weekly Sync'), Math.random() < 0.6, new Date(Date.now() - 2 * 86400000).toISOString()]
+      [
+        userId,
+        NOTIFICATION_TEMPLATES.MEETING_INVITED('Engineering Weekly Sync'),
+        Math.random() < 0.6,
+        new Date(Date.now() - 2 * 86400000).toISOString(),
+      ]
     );
     // Task assigned
     await client.query(
       `INSERT INTO notifications (user_id, message, read, created_at) VALUES ($1,$2,$3,$4)`,
-      [userId, NOTIFICATION_TEMPLATES.TASK_ASSIGNED('Share InternOps launch post on LinkedIn'), Math.random() < 0.5, new Date(Date.now() - 4 * 86400000).toISOString()]
+      [
+        userId,
+        NOTIFICATION_TEMPLATES.TASK_ASSIGNED(
+          'Share InternOps launch post on LinkedIn'
+        ),
+        Math.random() < 0.5,
+        new Date(Date.now() - 4 * 86400000).toISOString(),
+      ]
     );
     // Generic system note
     await client.query(
       `INSERT INTO notifications (user_id, message, read, created_at) VALUES ($1,$2,$3,$4)`,
-      [userId, 'Welcome to InternOps! Update your profile to get started.', true, new Date(Date.now() - 14 * 86400000).toISOString()]
+      [
+        userId,
+        'Welcome to InternOps! Update your profile to get started.',
+        true,
+        new Date(Date.now() - 14 * 86400000).toISOString(),
+      ]
     );
   }
 }
@@ -355,7 +672,11 @@ async function run() {
     `);
     console.table(counts.rows[0]);
 
-    console.log('\nLogin credentials (password for everyone below: ' + DEMO_PASSWORD + '):\n');
+    console.log(
+      '\nLogin credentials (password for everyone below: ' +
+        DEMO_PASSWORD +
+        '):\n'
+    );
     console.log('  ADMIN       admin@internops.com      (also: Admin@123)');
     console.log('  SENIOR_TL   aanya.s@internops.com    (Engineering)');
     console.log('  TL          rohan.v@internops.com    (Engineering)');

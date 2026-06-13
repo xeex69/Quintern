@@ -31,7 +31,9 @@ function validateEnv() {
       continue;
     }
     if (minLength && String(val).length < minLength) {
-      tooShort.push(`${name} (min ${minLength} chars, got ${String(val).length})`);
+      tooShort.push(
+        `${name} (min ${minLength} chars, got ${String(val).length})`
+      );
     }
   }
 
@@ -47,7 +49,9 @@ function validateEnv() {
       continue;
     }
     if (minLength && String(val).length < minLength) {
-      tooShort.push(`${name} (min ${minLength} chars, got ${String(val).length})`);
+      tooShort.push(
+        `${name} (min ${minLength} chars, got ${String(val).length})`
+      );
     }
   }
 
@@ -74,7 +78,9 @@ function validateEnv() {
   }
 
   if (missingRequired.length > 0 || tooShort.length > 0) {
-    console.error('❌ Refusing to start. Fix the above env issues and try again.');
+    console.error(
+      '❌ Refusing to start. Fix the above env issues and try again.'
+    );
     process.exit(1);
   }
 }

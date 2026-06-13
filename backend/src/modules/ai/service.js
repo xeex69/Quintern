@@ -23,7 +23,8 @@ const config = require('../../config');
 const pool = require('../../config/db');
 
 // ---- System prompt — concise, role-aware ----
-const SYSTEM_PROMPT = (role) => `You are the Uptoskills AI Assistant inside InternOps. The current user role is ${role}.
+const SYSTEM_PROMPT = (role) =>
+  `You are the Uptoskills AI Assistant inside InternOps. The current user role is ${role}.
 
 InternOps is the operational platform for Uptoskills intern programs. Stack: Node.js/Fastify backend, React/Vite frontend, PostgreSQL, JWT auth, Argon2, Upstash Redis.
 Modules: Attendance (PRESENT/ABSENT/LEAVE/EXAM_LEAVE/HALF_DAY/WFH), Ratings (1-10 scale, immutable), Projects (kanban/list/calendar, milestones, risks), Social Tasks + Proof Submissions, Meetings, Notifications, Reports, Audit Logs, AI Insights.
@@ -31,7 +32,10 @@ Modules: Attendance (PRESENT/ABSENT/LEAVE/EXAM_LEAVE/HALF_DAY/WFH), Ratings (1-1
 Give concise, role-aware answers. Use markdown bullets. Keep under 150 words unless the topic needs more. Never reveal secrets, internal endpoints, or API keys. If the question is outside the platform's scope, say so and suggest the closest module.`.trim();
 
 // ---- Per-provider timeout (a bit less than the request-level budget) ----
-const PER_PROVIDER_TIMEOUT = Math.max(4000, (config.ai.timeout || 25000) - 5000);
+const PER_PROVIDER_TIMEOUT = Math.max(
+  4000,
+  (config.ai.timeout || 25000) - 5000
+);
 
 async function withTimeout(promise, ms, label) {
   let to;
@@ -55,7 +59,10 @@ function cacheKey(provider, system, messages) {
 function getCached(key) {
   const hit = CACHE.get(key);
   if (!hit) return null;
-  if (Date.now() - hit.t > CACHE_TTL) { CACHE.delete(key); return null; }
+  if (Date.now() - hit.t > CACHE_TTL) {
+    CACHE.delete(key);
+    return null;
+  }
   return hit.v;
 }
 function setCached(key, value) {
@@ -70,7 +77,10 @@ async function callGroq({ system, messages }) {
   if (!config.ai.groqKey) throw new Error('groq-no-key');
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${config.ai.groqKey}` },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${config.ai.groqKey}`,
+    },
     body: JSON.stringify({
       model: 'llama-3.3-70b-versatile',
       max_tokens: 1000,
@@ -83,7 +93,10 @@ async function callGroq({ system, messages }) {
     throw new Error(`groq-${res.status} ${body.slice(0, 80)}`);
   }
   const data = await res.json();
-  return { text: (data.choices?.[0]?.message?.content || '').trim(), model: 'llama-3.3-70b-versatile' };
+  return {
+    text: (data.choices?.[0]?.message?.content || '').trim(),
+    model: 'llama-3.3-70b-versatile',
+  };
 }
 
 // ============================================================================
@@ -92,7 +105,11 @@ async function callGroq({ system, messages }) {
 async function callGemini({ system, messages }) {
   if (!config.ai.geminiKey) throw new Error('gemini-no-key');
   // Try several model names; the cheapest/fastest one that works wins.
-  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-flash-latest'];
+  const models = [
+    'gemini-2.5-flash',
+    'gemini-2.0-flash',
+    'gemini-flash-latest',
+  ];
   let lastErr = null;
   for (const model of models) {
     try {
@@ -112,7 +129,9 @@ async function callGemini({ system, messages }) {
       });
       if (!res.ok) {
         const body = await res.text().catch(() => '');
-        lastErr = new Error(`gemini-${model}-${res.status} ${body.slice(0, 100)}`);
+        lastErr = new Error(
+          `gemini-${model}-${res.status} ${body.slice(0, 100)}`
+        );
         continue;
       }
       const data = await res.json();
@@ -133,7 +152,10 @@ async function callDeepSeek({ system, messages }) {
   const base = config.ai.deepseekBaseUrl || 'https://api.deepseek.com';
   const res = await fetch(`${base}/v1/chat/completions`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${config.ai.deepseekKey}` },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${config.ai.deepseekKey}`,
+    },
     body: JSON.stringify({
       model: 'deepseek-chat',
       max_tokens: 1000,
@@ -146,7 +168,10 @@ async function callDeepSeek({ system, messages }) {
     throw new Error(`deepseek-${res.status} ${body.slice(0, 80)}`);
   }
   const data = await res.json();
-  return { text: (data.choices?.[0]?.message?.content || '').trim(), model: 'deepseek-chat' };
+  return {
+    text: (data.choices?.[0]?.message?.content || '').trim(),
+    model: 'deepseek-chat',
+  };
 }
 
 // ============================================================================
@@ -173,7 +198,10 @@ async function callAnthropic({ system, messages }) {
     throw new Error(`anthropic-${res.status} ${body.slice(0, 80)}`);
   }
   const data = await res.json();
-  return { text: (data.content?.[0]?.text || '').trim(), model: 'claude-sonnet-4-20250514' };
+  return {
+    text: (data.content?.[0]?.text || '').trim(),
+    model: 'claude-sonnet-4-20250514',
+  };
 }
 
 // ============================================================================
@@ -191,7 +219,10 @@ async function callFastAPI({ system, messages }) {
     throw new Error(`fastapi-${res.status} ${body.slice(0, 80)}`);
   }
   const data = await res.json();
-  return { text: (data.answer || data.message || data.response || '').trim(), model: 'fastapi' };
+  return {
+    text: (data.answer || data.message || data.response || '').trim(),
+    model: 'fastapi',
+  };
 }
 
 // ============================================================================
@@ -200,18 +231,41 @@ async function callFastAPI({ system, messages }) {
 //  Renders a role-aware summary from live platform data so the UI never
 //  shows an empty bubble. This is the safety net.
 async function callHeuristic({ role, message, history = [] }) {
-  let summary = { role, pending_approvals: 0, open_tasks: 0, unread_notifications: 0, active_projects: 0 };
+  let summary = {
+    role,
+    pending_approvals: 0,
+    open_tasks: 0,
+    unread_notifications: 0,
+    active_projects: 0,
+  };
   try {
     const [tasks, notifs, projects] = await Promise.all([
-      pool.query(`SELECT COUNT(*)::int AS c FROM project_tasks t
+      pool
+        .query(
+          `SELECT COUNT(*)::int AS c FROM project_tasks t
                  JOIN project_members m ON m.project_id = t.project_id
-                 WHERE m.user_id = $1 AND t.deleted_at IS NULL AND t.status NOT IN ('DONE','CANCELLED')`, [/* user id */ null]).catch(() => ({ rows: [{ c: 0 }] })),
-      pool.query(`SELECT COUNT(*)::int AS c FROM notifications WHERE read = FALSE AND deleted_at IS NULL`, []).catch(() => ({ rows: [{ c: 0 }] })),
-      pool.query(`SELECT COUNT(*)::int AS c FROM projects WHERE deleted_at IS NULL AND status = 'ACTIVE'`, []).catch(() => ({ rows: [{ c: 0 }] })),
+                 WHERE m.user_id = $1 AND t.deleted_at IS NULL AND t.status NOT IN ('DONE','CANCELLED')`,
+          [/* user id */ null]
+        )
+        .catch(() => ({ rows: [{ c: 0 }] })),
+      pool
+        .query(
+          `SELECT COUNT(*)::int AS c FROM notifications WHERE read = FALSE AND deleted_at IS NULL`,
+          []
+        )
+        .catch(() => ({ rows: [{ c: 0 }] })),
+      pool
+        .query(
+          `SELECT COUNT(*)::int AS c FROM projects WHERE deleted_at IS NULL AND status = 'ACTIVE'`,
+          []
+        )
+        .catch(() => ({ rows: [{ c: 0 }] })),
     ]);
     summary.unread_notifications = notifs.rows[0]?.c || 0;
     summary.active_projects = projects.rows[0]?.c || 0;
-  } catch (e) { /* heuristic is best-effort */ }
+  } catch (e) {
+    /* heuristic is best-effort */
+  }
 
   const m = (message || '').toLowerCase().trim();
   let answer = '';
@@ -234,11 +288,15 @@ async function callHeuristic({ role, message, history = [] }) {
   } else {
     // Generic role-aware greeting
     const tips = {
-      ADMIN:    'Try asking: "summarize org attendance", "top performers this month", or "how do I add a new user".',
-      SENIOR_TL:'Try asking: "my team summary", "best rating practices", or "how do I mark team attendance".',
-      TL:       'Try asking: "rate my team", "mark attendance", or "view team performance".',
-      CAPTAIN:  'Try asking: "who are my interns", "rate my interns", or "how do I track attendance".',
-      INTERN:   'Try asking: "my attendance", "my ratings", or "how do I upload a proof".',
+      ADMIN:
+        'Try asking: "summarize org attendance", "top performers this month", or "how do I add a new user".',
+      SENIOR_TL:
+        'Try asking: "my team summary", "best rating practices", or "how do I mark team attendance".',
+      TL: 'Try asking: "rate my team", "mark attendance", or "view team performance".',
+      CAPTAIN:
+        'Try asking: "who are my interns", "rate my interns", or "how do I track attendance".',
+      INTERN:
+        'Try asking: "my attendance", "my ratings", or "how do I upload a proof".',
     };
     answer = `Hi! I'm the Uptoskills AI assistant. I can help you navigate the platform, draft workflows, and answer product questions.\n\n${tips[role] || tips.INTERN}`;
   }
@@ -249,11 +307,15 @@ async function callHeuristic({ role, message, history = [] }) {
 //  Fallback chain runner
 // ============================================================================
 const PROVIDER_CHAIN = [
-  { name: 'groq',      fn: callGroq,      needs: () => !!config.ai.groqKey },
-  { name: 'gemini',    fn: callGemini,    needs: () => !!config.ai.geminiKey },
-  { name: 'deepseek',  fn: callDeepSeek,  needs: () => !!config.ai.deepseekKey },
-  { name: 'anthropic', fn: callAnthropic, needs: () => !!config.ai.anthropicKey },
-  { name: 'fastapi',   fn: callFastAPI,   needs: () => !!config.ai.fastapiUrl },
+  { name: 'groq', fn: callGroq, needs: () => !!config.ai.groqKey },
+  { name: 'gemini', fn: callGemini, needs: () => !!config.ai.geminiKey },
+  { name: 'deepseek', fn: callDeepSeek, needs: () => !!config.ai.deepseekKey },
+  {
+    name: 'anthropic',
+    fn: callAnthropic,
+    needs: () => !!config.ai.anthropicKey,
+  },
+  { name: 'fastapi', fn: callFastAPI, needs: () => !!config.ai.fastapiUrl },
 ];
 
 async function ask({ role = 'INTERN', history = [], message }) {
@@ -269,10 +331,24 @@ async function ask({ role = 'INTERN', history = [], message }) {
     const cached = getCached(key);
     if (cached) return { ...cached, cached: true };
     try {
-      const { text, model } = await withTimeout(p.fn({ system, messages }), PER_PROVIDER_TIMEOUT, p.name);
+      const { text, model } = await withTimeout(
+        p.fn({ system, messages }),
+        PER_PROVIDER_TIMEOUT,
+        p.name
+      );
       if (text && text.trim().length > 0) {
-        const result = { answer: text.trim(), provider: p.name, model, latencyMs: Date.now() - start, cached: false };
-        setCached(key, { answer: result.answer, provider: result.provider, model: result.model });
+        const result = {
+          answer: text.trim(),
+          provider: p.name,
+          model,
+          latencyMs: Date.now() - start,
+          cached: false,
+        };
+        setCached(key, {
+          answer: result.answer,
+          provider: result.provider,
+          model: result.model,
+        });
         return result;
       }
       errors.push({ provider: p.name, err: 'empty-response' });
@@ -285,7 +361,14 @@ async function ask({ role = 'INTERN', history = [], message }) {
   try {
     const start = Date.now();
     const { text, model } = await callHeuristic({ role, message, history });
-    return { answer: text, provider: 'heuristic', model, latencyMs: Date.now() - start, cached: false, fallback: errors };
+    return {
+      answer: text,
+      provider: 'heuristic',
+      model,
+      latencyMs: Date.now() - start,
+      cached: false,
+      fallback: errors,
+    };
   } catch (e) {
     // Should never happen — heuristic is pure JS.
     const err = new Error('All AI providers and heuristic failed');
@@ -299,24 +382,55 @@ async function askSummary({ role = 'INTERN' }) {
   // Used by /ai/insights.
   try {
     const [tasks, notifs, projects] = await Promise.all([
-      pool.query(`SELECT COUNT(*)::int AS c FROM project_tasks t
+      pool
+        .query(
+          `SELECT COUNT(*)::int AS c FROM project_tasks t
                  JOIN project_members m ON m.project_id = t.project_id
-                 WHERE m.user_id = (SELECT id FROM users WHERE id = m.user_id LIMIT 1) AND t.deleted_at IS NULL AND t.status NOT IN ('DONE','CANCELLED')`).catch(() => ({ rows: [{ c: 0 }] })),
-      pool.query(`SELECT COUNT(*)::int AS c FROM notifications WHERE read = FALSE AND deleted_at IS NULL`, []).catch(() => ({ rows: [{ c: 0 }] })),
-      pool.query(`SELECT COUNT(*)::int AS c FROM projects WHERE deleted_at IS NULL AND status = 'ACTIVE'`, []).catch(() => ({ rows: [{ c: 0 }] })),
+                 WHERE m.user_id = (SELECT id FROM users WHERE id = m.user_id LIMIT 1) AND t.deleted_at IS NULL AND t.status NOT IN ('DONE','CANCELLED')`
+        )
+        .catch(() => ({ rows: [{ c: 0 }] })),
+      pool
+        .query(
+          `SELECT COUNT(*)::int AS c FROM notifications WHERE read = FALSE AND deleted_at IS NULL`,
+          []
+        )
+        .catch(() => ({ rows: [{ c: 0 }] })),
+      pool
+        .query(
+          `SELECT COUNT(*)::int AS c FROM projects WHERE deleted_at IS NULL AND status = 'ACTIVE'`,
+          []
+        )
+        .catch(() => ({ rows: [{ c: 0 }] })),
     ]);
-    const prompt = `Generate 3 concise, role-aware insights (1 sentence each, markdown bullets) for a ${role} based on: ${JSON.stringify({
-      active_projects: projects.rows[0]?.c || 0,
-      unread_notifications: notifs.rows[0]?.c || 0,
-    })}`;
+    const prompt = `Generate 3 concise, role-aware insights (1 sentence each, markdown bullets) for a ${role} based on: ${JSON.stringify(
+      {
+        active_projects: projects.rows[0]?.c || 0,
+        unread_notifications: notifs.rows[0]?.c || 0,
+      }
+    )}`;
     const result = await ask({ role, history: [], message: prompt });
-    return { ...result, summary: { role, active_projects: projects.rows[0]?.c || 0, unread_notifications: notifs.rows[0]?.c || 0 } };
+    return {
+      ...result,
+      summary: {
+        role,
+        active_projects: projects.rows[0]?.c || 0,
+        unread_notifications: notifs.rows[0]?.c || 0,
+      },
+    };
   } catch (e) {
     return {
       answer: `- You're a ${role} — open the dashboard to see what's on your plate today.\n- Add team attendance, project progress, and ratings for a more tailored view.\n- All insights are role-aware, so check back after activity lands.`,
-      provider: 'heuristic', model: 'heuristic', latencyMs: 0, cached: false, summary: { role }
+      provider: 'heuristic',
+      model: 'heuristic',
+      latencyMs: 0,
+      cached: false,
+      summary: { role },
     };
   }
 }
 
-module.exports = { ask, askSummary, PROVIDERS: PROVIDER_CHAIN.map((p) => p.name) };
+module.exports = {
+  ask,
+  askSummary,
+  PROVIDERS: PROVIDER_CHAIN.map((p) => p.name),
+};

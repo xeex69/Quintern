@@ -27,7 +27,10 @@ function verifyToken(token) {
   if (parts.length !== 2) return false;
   const [raw, sig] = parts;
   if (!raw || !sig) return false;
-  const expected = crypto.createHmac('sha256', SECRET).update(raw).digest('hex');
+  const expected = crypto
+    .createHmac('sha256', SECRET)
+    .update(raw)
+    .digest('hex');
   const a = Buffer.from(sig, 'hex');
   const b = Buffer.from(expected, 'hex');
   // timingSafeEqual throws on length mismatch — guard it.

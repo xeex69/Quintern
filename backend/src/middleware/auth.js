@@ -11,7 +11,9 @@ async function authMiddleware(request, reply) {
   // refresh tokens are bound to /api/auth/refresh only. This stops an
   // attacker who phishes a refresh token from using it as a bearer.
   if (looksLikeRefreshToken(token)) {
-    return reply.status(401).send({ error: 'Refresh tokens are not valid for API access' });
+    return reply
+      .status(401)
+      .send({ error: 'Refresh tokens are not valid for API access' });
   }
 
   try {

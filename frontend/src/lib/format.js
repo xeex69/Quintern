@@ -5,11 +5,13 @@ import { ROLE_RANK } from './constants';
 
 export function initialsOf(user) {
   const n = (user?.fullName || user?.full_name || user?.email || '?').trim();
-  return n
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase())
-    .join('') || '?';
+  return (
+    n
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((w) => w[0]?.toUpperCase())
+      .join('') || '?'
+  );
 }
 
 export function attendancePct(m) {
@@ -56,7 +58,9 @@ export function fullName(user) {
 }
 
 export function pickDefined(obj) {
-  return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== '' && v !== undefined));
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== '' && v !== undefined)
+  );
 }
 
 // Convert snake_case object to camelCase keys.
@@ -67,7 +71,7 @@ export function snakeToCamel(obj) {
     Object.entries(obj).map(([k, v]) => [
       k.replace(/_([a-z])/g, (_, c) => c.toUpperCase()),
       snakeToCamel(v),
-    ]),
+    ])
   );
 }
 
@@ -79,7 +83,7 @@ export function camelToSnake(obj) {
     Object.entries(obj).map(([k, v]) => [
       k.replace(/([A-Z])/g, '_$1').toLowerCase(),
       camelToSnake(v),
-    ]),
+    ])
   );
 }
 

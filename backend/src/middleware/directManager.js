@@ -39,25 +39,40 @@ function isInSubtree(requesterRole, requesterId, targetId, pool) {
         [targetId, requesterId, cap]
       );
       resolve(rows[0]?.depth ?? 0);
-    } catch (e) { reject(e); }
+    } catch (e) {
+      reject(e);
+    }
   });
 }
 
 function directManagerValidation(field = 'user_id') {
   return async (request, reply) => {
-    const target = request.body?.[field] || request.params?.[field] || request.query?.[field];
+    const target =
+      request.body?.[field] ||
+      request.params?.[field] ||
+      request.query?.[field];
     if (!target) return reply.status(400).send({ error: 'Target required' });
     if (target === request.user.id) {
       return reply.status(400).send({ error: 'You cannot rate yourself' });
     }
     const pool = require('../config/db');
-    const { rows: [user] } = await pool.query('SELECT id, role FROM users WHERE id = $1', [target]);
+    const {
+      rows: [user],
+    } = await pool.query('SELECT id, role FROM users WHERE id = $1', [target]);
     if (!user) return reply.status(404).send({ error: 'User not found' });
 
     if (request.user.role === 'ADMIN') return; // admin bypass
 
-    const depth = await isInSubtree(request.user.role, request.user.id, target, pool);
-    if (!depth) return reply.status(403).send({ error: 'This member is not in your team' });
+    const depth = await isInSubtree(
+      request.user.role,
+      request.user.id,
+      target,
+      pool
+    );
+    if (!depth)
+      return reply
+        .status(403)
+        .send({ error: 'This member is not in your team' });
 
     // `depth` is 1-based from the target walking up to the requester, so the
     // requester being the direct manager is depth 2. Cap at MAX_CHAIN_DEPTH.

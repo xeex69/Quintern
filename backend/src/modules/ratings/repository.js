@@ -26,7 +26,10 @@ async function getAverageRating(userId) {
      FROM ratings WHERE rated_user_id = $1 AND deleted_at IS NULL`,
     [userId]
   );
-  return { avg: res.rows[0]?.avg ? Number(Number(res.rows[0].avg).toFixed(2)) : null, count: res.rows[0]?.count || 0 };
+  return {
+    avg: res.rows[0]?.avg ? Number(Number(res.rows[0].avg).toFixed(2)) : null,
+    count: res.rows[0]?.count || 0,
+  };
 }
 
 module.exports = { addRating, getRatings, getAverageRating };

@@ -1,4 +1,4 @@
-import { useResponsive } from '../lib/responsive'
+import { useResponsive } from '../lib/responsive';
 
 // Renders a table on tablet+ and a card list on mobile. The `rows` prop is an
 // array of {key, cells: [{label, value, render?}, ...]} objects. The `card`
@@ -9,7 +9,10 @@ export function ResponsiveTable({ items, renderCard, desktopTable }) {
     return (
       <div className="space-y-2">
         {items.map((item) => (
-          <div key={item.id || item.key} className="bg-surface-raised border border-border rounded-md p-3">
+          <div
+            key={item.id || item.key}
+            className="bg-surface-raised border border-border rounded-md p-3"
+          >
             {renderCard(item)}
           </div>
         ))}

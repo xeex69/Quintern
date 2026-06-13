@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { queryClient } from './queryClient'
+import axios from 'axios';
+import { queryClient } from './queryClient';
 
 // All backend routes are mounted under /api; Vite proxies this to :5000 in dev.
 // We use bearer-in-localStorage, so withCredentials stays OFF — flipping it on
@@ -9,12 +9,14 @@ const api = axios.create({
   baseURL: '/api',
   withCredentials: false,
   timeout: 30000,
-})
+});
 
 // CSRF token cache. We only fetch one and reuse it, but a hard logout/login or
 // 401 must invalidate the cache or stale tokens will be sent and rejected.
-let csrfToken = null
-function clearCsrf() { csrfToken = null }
+let csrfToken = null;
+function clearCsrf() {
+  csrfToken = null;
+}
 
 // Listen for the auth store's "logout" event instead of importing it. This
 // keeps the module graph acyclic — auth.js doesn't import axios.js either,
@@ -26,30 +28,30 @@ if (typeof window !== 'undefined') {
 }
 
 async function getCsrfToken() {
-  if (csrfToken) return csrfToken
+  if (csrfToken) return csrfToken;
   try {
-    const res = await api.get('/auth/csrf-token')
-    csrfToken = res.data.csrfToken
+    const res = await api.get('/auth/csrf-token');
+    csrfToken = res.data.csrfToken;
   } catch {
     // Last-resort fallback so non-mutating calls keep working; mutating calls
     // will be rejected by the server with 403 and the user can retry.
-    csrfToken = Math.random().toString(36).slice(2)
+    csrfToken = Math.random().toString(36).slice(2);
   }
-  return csrfToken
+  return csrfToken;
 }
 
 api.interceptors.request.use(async (config) => {
   // Read the token from localStorage each call — cheap, and stays in sync
   // even if the user opens a second tab and logs out there.
-  const token = localStorage.getItem('accessToken')
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  const token = localStorage.getItem('accessToken');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
 
-  const method = (config.method || 'get').toLowerCase()
+  const method = (config.method || 'get').toLowerCase();
   if (!['get', 'head', 'options'].includes(method)) {
-    config.headers['X-CSRF-Token'] = await getCsrfToken()
+    config.headers['X-CSRF-Token'] = await getCsrfToken();
   }
-  return config
-})
+  return config;
+});
 
 // On 401: invalidate CSRF, clear the query cache, and bounce to /login.
 // We don't import the auth store here (avoids the cycle); we just clear
@@ -59,17 +61,21 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      clearCsrf()
-      try { localStorage.removeItem('accessToken') } catch {}
-      try { localStorage.removeItem('user') } catch {}
-      queryClient.clear()
+      clearCsrf();
+      try {
+        localStorage.removeItem('accessToken');
+      } catch {}
+      try {
+        localStorage.removeItem('user');
+      } catch {}
+      queryClient.clear();
       if (!window.location.pathname.startsWith('/login')) {
-        window.location.href = '/login'
+        window.location.href = '/login';
       }
     }
-    return Promise.reject(err)
+    return Promise.reject(err);
   }
-)
+);
 
-export { clearCsrf }
-export default api
+export { clearCsrf };
+export default api;

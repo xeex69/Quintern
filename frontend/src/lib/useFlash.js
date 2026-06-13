@@ -7,9 +7,12 @@ export function useFlash(ms = 2500) {
   const [err, setErr] = useState('');
   const timer = useRef(null);
 
-  useEffect(() => () => {
-    if (timer.current) clearTimeout(timer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    []
+  );
 
   const flash = (text) => {
     if (timer.current) clearTimeout(timer.current);

@@ -6,11 +6,20 @@ const pool = require('../../config/db');
 
 const chatSchema = z.object({
   message: z.string().min(1).max(4000),
-  role: z.enum(['ADMIN', 'SENIOR_TL', 'TL', 'CAPTAIN', 'INTERN']).optional().default('INTERN'),
-  history: z.array(z.object({
-    role: z.enum(['user', 'assistant']),
-    content: z.string().max(4000),
-  })).max(20).optional().default([]),
+  role: z
+    .enum(['ADMIN', 'SENIOR_TL', 'TL', 'CAPTAIN', 'INTERN'])
+    .optional()
+    .default('INTERN'),
+  history: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant']),
+        content: z.string().max(4000),
+      })
+    )
+    .max(20)
+    .optional()
+    .default([]),
 });
 
 async function routes(fastify) {
@@ -18,7 +27,9 @@ async function routes(fastify) {
   fastify.post('/assistant', { preHandler: [auth] }, async (req, reply) => {
     const parsed = chatSchema.safeParse(req.body);
     if (!parsed.success) {
-      return reply.status(400).send({ error: 'Bad Request', details: parsed.error.format() });
+      return reply
+        .status(400)
+        .send({ error: 'Bad Request', details: parsed.error.format() });
     }
     const { message, role, history } = parsed.data;
     // Use the user's actual role if not overridden
@@ -45,8 +56,13 @@ async function routes(fastify) {
     } catch (err) {
       req.log.error({ err: err.message }, 'AI insights error');
       return {
-        answer: '- All AI providers are temporarily unavailable.\n- Your dashboard still works — try the data widgets below.\n- Insights will reappear once providers recover.',
-        provider: 'fallback', model: 'fallback', latencyMs: 0, cached: false, summary: { role }
+        answer:
+          '- All AI providers are temporarily unavailable.\n- Your dashboard still works — try the data widgets below.\n- Insights will reappear once providers recover.',
+        provider: 'fallback',
+        model: 'fallback',
+        latencyMs: 0,
+        cached: false,
+        summary: { role },
       };
     }
   });
@@ -56,23 +72,38 @@ async function routes(fastify) {
     const q = String(req.query.q || '').trim();
     if (!q) return { users: [], projects: [], tasks: [] };
     const [users, projects, tasks] = await Promise.all([
-      pool.query(`
+      pool
+        .query(
+          `
         SELECT id, email, full_name, role FROM users
         WHERE deleted_at IS NULL
           AND (full_name ILIKE $1 OR email ILIKE $1)
         ORDER BY full_name ASC LIMIT 10
-      `, [`%${q}%`]).catch(() => ({ rows: [] })),
-      pool.query(`
+      `,
+          [`%${q}%`]
+        )
+        .catch(() => ({ rows: [] })),
+      pool
+        .query(
+          `
         SELECT id, name, status, health FROM projects
         WHERE deleted_at IS NULL AND name ILIKE $1
         ORDER BY updated_at DESC LIMIT 10
-      `, [`%${q}%`]).catch(() => ({ rows: [] })),
-      pool.query(`
+      `,
+          [`%${q}%`]
+        )
+        .catch(() => ({ rows: [] })),
+      pool
+        .query(
+          `
         SELECT t.id, t.title, t.status, p.name AS project_name
         FROM project_tasks t JOIN projects p ON p.id = t.project_id
         WHERE t.deleted_at IS NULL AND t.title ILIKE $1
         ORDER BY t.created_at DESC LIMIT 10
-      `, [`%${q}%`]).catch(() => ({ rows: [] })),
+      `,
+          [`%${q}%`]
+        )
+        .catch(() => ({ rows: [] })),
     ]);
     return { users: users.rows, projects: projects.rows, tasks: tasks.rows };
   });

@@ -36,11 +36,27 @@ export const ROLE_RANK = Object.freeze({
   INTERN: 0,
 });
 
-export const MANAGER_ROLES = Object.freeze(['ADMIN', 'SENIOR_TL', 'TL', 'CAPTAIN']);
+export const MANAGER_ROLES = Object.freeze([
+  'ADMIN',
+  'SENIOR_TL',
+  'TL',
+  'CAPTAIN',
+]);
 
-export const ALL_ROLES = Object.freeze(['ADMIN', 'SENIOR_TL', 'TL', 'CAPTAIN', 'INTERN']);
+export const ALL_ROLES = Object.freeze([
+  'ADMIN',
+  'SENIOR_TL',
+  'TL',
+  'CAPTAIN',
+  'INTERN',
+]);
 
-export const ASSIGNABLE_ROLES = Object.freeze(['SENIOR_TL', 'TL', 'CAPTAIN', 'INTERN']);
+export const ASSIGNABLE_ROLES = Object.freeze([
+  'SENIOR_TL',
+  'TL',
+  'CAPTAIN',
+  'INTERN',
+]);
 
 export const isManager = (role) => MANAGER_ROLES.includes(role);
 
@@ -97,12 +113,12 @@ export const RATING_MIN = 1;
 export const RATING_MAX = 10;
 export const RATING_CATEGORIES = Object.freeze([
   { value: 'PERFORMANCE', label: 'Performance' },
-  { value: 'TASK',        label: 'Task' },
-  { value: 'PROJECT',     label: 'Project' },
-  { value: 'INTERN',      label: 'Intern' },
-  { value: 'TEAM',        label: 'Team' },
-  { value: 'MENTOR',      label: 'Mentor' },
-  { value: 'REVIEW',      label: 'Review' },
+  { value: 'TASK', label: 'Task' },
+  { value: 'PROJECT', label: 'Project' },
+  { value: 'INTERN', label: 'Intern' },
+  { value: 'TEAM', label: 'Team' },
+  { value: 'MENTOR', label: 'Mentor' },
+  { value: 'REVIEW', label: 'Review' },
 ]);
 
 export const PROOF_STATUS = Object.freeze({
@@ -132,7 +148,13 @@ export const INTERNSHIP_BADGE = Object.freeze({
 });
 
 export const PLATFORMS = Object.freeze([
-  'LinkedIn', 'GitHub', 'Twitter', 'Medium', 'Instagram', 'YouTube', 'Other',
+  'LinkedIn',
+  'GitHub',
+  'Twitter',
+  'Medium',
+  'Instagram',
+  'YouTube',
+  'Other',
 ]);
 
 export const PLATFORM_ICON = Object.freeze({

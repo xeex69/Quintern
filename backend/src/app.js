@@ -65,93 +65,93 @@ app.register(require('@fastify/swagger'), {
   openapi: {
     info: {
       title: 'InternOps API',
-      version: '1.0.0'
-    }
-  }
+      version: '1.0.0',
+    },
+  },
 });
 
 app.register(require('@fastify/swagger-ui'), {
-  routePrefix: '/docs'
+  routePrefix: '/docs',
 });
 
 app.register(require('./modules/auth/routes'), {
-  prefix: '/api/auth'
+  prefix: '/api/auth',
 });
 
 app.register(require('./modules/users/routes'), {
-  prefix: '/api/users'
+  prefix: '/api/users',
 });
 
 app.register(require('./modules/departments/routes'), {
-  prefix: '/api/departments'
+  prefix: '/api/departments',
 });
 
 app.register(require('./modules/hierarchy/routes'), {
-  prefix: '/api/hierarchy'
+  prefix: '/api/hierarchy',
 });
 
 app.register(require('./modules/team/routes'), {
-  prefix: '/api/team'
+  prefix: '/api/team',
 });
 
 app.register(require('./modules/attendance/routes'), {
-  prefix: '/api/attendance'
+  prefix: '/api/attendance',
 });
 
 app.register(require('./modules/ratings/routes'), {
-  prefix: '/api/ratings'
+  prefix: '/api/ratings',
 });
 
 app.register(require('./modules/social-tasks/routes'), {
-  prefix: '/api/tasks'
+  prefix: '/api/tasks',
 });
 
 app.register(require('./modules/proof-submissions/routes'), {
-  prefix: '/api/proofs'
+  prefix: '/api/proofs',
 });
 
 app.register(require('./modules/notifications/routes'), {
-  prefix: '/api/notifications'
+  prefix: '/api/notifications',
 });
 
 app.register(require('./modules/audit/routes'), {
-  prefix: '/api/audit'
+  prefix: '/api/audit',
 });
 
 app.register(require('./modules/uploads/routes'), {
-  prefix: '/api/uploads'
+  prefix: '/api/uploads',
 });
 
 app.register(require('./modules/analytics/routes'), {
-  prefix: '/api/analytics'
+  prefix: '/api/analytics',
 });
 
 app.register(require('./modules/meetings/routes'), {
-  prefix: '/api/meetings'
+  prefix: '/api/meetings',
 });
 
 app.register(require('./modules/sessions/routes'), {
-  prefix: '/api/sessions'
+  prefix: '/api/sessions',
 });
 
 app.register(require('./modules/reports/routes'), {
-  prefix: '/api/reports'
+  prefix: '/api/reports',
 });
 
 app.register(require('./modules/reports/export'), {
-  prefix: '/api/reports/export'
+  prefix: '/api/reports/export',
 });
 
 app.register(require('./modules/uptoskills/routes'), {
-  prefix: '/api/uptoskills'
+  prefix: '/api/uptoskills',
 });
 
 app.register(require('./modules/ai/routes'), {
-  prefix: '/api/ai'
+  prefix: '/api/ai',
 });
 
 app.register(require('./modules/projects/routes'), {
-  prefix: '/api/projects'
+  prefix: '/api/projects',
 });
 
 app.get('/', async (req, reply) => {
@@ -191,12 +191,12 @@ app.get('/health/db', async (req, reply) => {
     await require('./config/db').query('SELECT 1');
     reply.send({
       status: 'ok',
-      db: 'connected'
+      db: 'connected',
     });
   } catch {
     reply.status(503).send({
       status: 'error',
-      db: 'disconnected'
+      db: 'disconnected',
     });
   }
 });
@@ -225,7 +225,9 @@ app.get('/api/health', async (req, reply) => {
     await require('./config/db').query('SELECT 1');
     return reply.send({ status: 'ok', service: 'internops', db: 'connected' });
   } catch {
-    return reply.status(503).send({ status: 'error', service: 'internops', db: 'disconnected' });
+    return reply
+      .status(503)
+      .send({ status: 'error', service: 'internops', db: 'disconnected' });
   }
 });
 app.get('/api/ready', async (req, reply) => {
@@ -239,12 +241,14 @@ app.get('/api/ready', async (req, reply) => {
     // The migrate runner creates `_migrations` (leading underscore) — match
     // the real table name from backend/src/db/migrate.js.
     const { rows } = await require('./config/db').query(
-      "SELECT COUNT(*)::int AS c FROM _migrations"
+      'SELECT COUNT(*)::int AS c FROM _migrations'
     );
     checks.migrations = rows[0].c > 0;
   } catch {}
   const ready = checks.db && checks.migrations;
-  reply.status(ready ? 200 : 503).send({ status: ready ? 'ready' : 'not-ready', checks });
+  reply
+    .status(ready ? 200 : 503)
+    .send({ status: ready ? 'ready' : 'not-ready', checks });
 });
 
 // /api/version is for client compat checks (e.g. "this UI is built for
@@ -263,11 +267,14 @@ app.get('/api/version', async (req, reply) => {
 app.addHook('onRequest', metrics.trackHttpMetrics);
 
 app.addHook('onRequest', async (request) => {
-  request.log.info({
-    reqId: request.id,
-    method: request.method,
-    url: request.url
-  }, 'incoming');
+  request.log.info(
+    {
+      reqId: request.id,
+      method: request.method,
+      url: request.url,
+    },
+    'incoming'
+  );
 });
 
 app.setErrorHandler((error, request, reply) => {
@@ -281,7 +288,7 @@ app.setErrorHandler((error, request, reply) => {
   }
 
   return reply.status(error.statusCode || 500).send({
-    error: error.message || 'Internal Server Error'
+    error: error.message || 'Internal Server Error',
   });
 });
 
@@ -293,7 +300,7 @@ const start = async () => {
   try {
     await app.listen({
       port: config.port,
-      host: config.host
+      host: config.host,
     });
 
     initializeWebSocket(app.server);
