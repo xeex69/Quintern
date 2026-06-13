@@ -1,31 +1,30 @@
-# Quintern · Render Blueprint
+# Quintern · Render Blueprint (backend only)
 #
 # One-click deploy: open https://render.com → New → Blueprint → connect
 # rajat-wyrm/Quintern → select this file → Apply.
 #
 # This creates:
-#   - quintern-api  (Node web service, backend, free tier)
-#   - quintern-web  (Static site, frontend, free tier)
+#   - quintern-api  (Node web service, Fastify backend, free tier, Docker)
 #
-# Required env vars to set manually in Render dashboard
-# (or via API) BEFORE first deploy:
+# The frontend (quintern-web) is hosted on Vercel — see VERCEL.md.
+# Render's Blueprint spec no longer supports type: static; static sites
+# must be created in the Render dashboard as a separate step.
+#
+# Required env vars to set manually in the Render dashboard
+# (or via the Render API) BEFORE first deploy:
 #   - DATABASE_URL            (from neon.tech)
 #   - UPSTASH_REDIS_REST_URL  (from upstash.com)
 #   - UPSTASH_REDIS_REST_TOKEN
-#   - JWT_ACCESS_SECRET
-#   - JWT_REFRESH_SECRET
-#   - CSRF_SECRET
-#   - GROQ_API_KEY
-#   - GEMINI_API_KEY
+#   - GROQ_API_KEY            (from console.groq.com — optional)
+#   - GEMINI_API_KEY          (from aistudio.google.com — optional)
 #
-# All other env vars default to safe production values.
+# All other secrets (JWT, CSRF, API_KEY) are auto-generated.
 #
-# Cost: $0/month (Render free tier + Neon free + Upstash free)
+# Cost: $0/month (Render free web service + Neon free + Upstash free).
+# Note: Render free web service sleeps after 15 min of inactivity
+# (cold start ~30s on the next request).
 
 services:
-  # ─────────────────────────────────────────────────────────
-  #  Backend — Fastify API
-  # ─────────────────────────────────────────────────────────
   - type: web
     name: quintern-api
     runtime: docker
@@ -37,6 +36,7 @@ services:
     healthCheckPath: /health
     autoDeploy: true
     envVars:
+      # ── Runtime ──
       - key: NODE_ENV
         value: production
       - key: PORT
@@ -44,73 +44,64 @@ services:
       - key: HOST
         value: 0.0.0.0
       - key: APP_URL
-        sync: false          # set after first deploy to https://quintern-api.onrender.com
+        sync: false
       - key: CORS_ORIGIN
-        sync: false          # set to your frontend URL
+        sync: false
       - key: LOG_LEVEL
         value: info
+
+      # ── AI ──
       - key: AI_PROVIDER
-        value: heuristic     # default to heuristic in case API keys are missing
+        value: heuristic
       - key: AI_TIMEOUT
         value: "8000"
+
+      # ── JWT / CSRF / API key (auto-generated) ──
       - key: JWT_ACCESS_EXPIRES_IN
         value: 15m
       - key: JWT_REFRESH_EXPIRES_IN
         value: 7d
-      - key: RATE_LIMIT_GLOBAL
-        value: "600"
-      - key: RATE_LIMIT_AUTH
-        value: "20"
-      - key: DATABASE_URL
-        sync: false          # REQUIRED — from neon.tech
-      - key: UPSTASH_REDIS_REST_URL
-        sync: false          # REQUIRED — from upstash.com
-      - key: UPSTASH_REDIS_REST_TOKEN
-        sync: false
       - key: JWT_ACCESS_SECRET
-        generateValue: true   # auto-generate a strong secret
+        generateValue: true
       - key: JWT_REFRESH_SECRET
         generateValue: true
       - key: CSRF_SECRET
         generateValue: true
       - key: API_KEY
         generateValue: true
+
+      # ── Rate limit ──
+      - key: RATE_LIMIT_GLOBAL
+        value: "600"
+      - key: RATE_LIMIT_AUTH
+        value: "20"
+
+      # ── Required secrets (set manually) ──
+      - key: DATABASE_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false
+
+      # ── AI providers (set manually, any subset) ──
       - key: GROQ_API_KEY
-        sync: false          # optional — from console.groq.com
+        sync: false
       - key: GEMINI_API_KEY
-        sync: false          # optional — from aistudio.google.com
+        sync: false
       - key: HUGGINGFACE_TOKEN
-        sync: false          # optional
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+      # ── Email (set SMTP_* or leave as-is for dev logging) ──
       - key: EMAIL_PROVIDER
-        value: log            # log emails to stdout in dev
+        value: log
       - key: EMAIL_FROM
         value: noreply@quintern.local
       - key: SMTP_HOST
         value: localhost
       - key: SMTP_PORT
         value: "1025"
-
-  # ─────────────────────────────────────────────────────────
-  #  Frontend — Vite SPA
-  # ─────────────────────────────────────────────────────────
-  - type: static
-    name: quintern-web
-    rootDir: frontend
-    plan: free
-    branch: main
-    autoDeploy: true
-    buildCommand: npm ci && VITE_API_BASE=https://quintern-api.onrender.com/api npm run build
-    publishPath: dist
-    headers:
-      - path: /*
-        name: X-Frame-Options
-        value: SAMEORIGIN
-      - path: /*
-        name: X-Content-Type-Options
-        value: nosniff
-      - path: /*
-        name: Referrer-Policy
-        value: strict-origin-when-cross-origin
-      - path: /assets/*
-        name: Cache-Control
-        value: public, max-age=31536000, immutable
