@@ -1,11 +1,13 @@
 # InternOps · Pull Request
 
 ## Summary
+
 <!-- 1-3 bullet points. What does this PR do and why? -->
 
 -
 
 ## Type of change
+
 - [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
 - [ ] ✨ New feature (non-breaking change that adds functionality)
 - [ ] 💥 Breaking change (fix or feature that would change existing behavior)
@@ -14,7 +16,9 @@
 - [ ] ⚙️ Chore (CI, build, tooling)
 
 ## Test plan
+
 <!-- How did you verify this works? -->
+
 - [ ] Unit tests added/updated
 - [ ] Manual testing steps:
   1.
@@ -24,6 +28,7 @@
 - [ ] Browser tested: [ ] Chrome [ ] Firefox [ ] Safari [ ] Mobile
 
 ## Checklist
+
 - [ ] Code follows the project's style (Prettier ran via `Auto Format Code` workflow)
 - [ ] Self-reviewed my own code
 - [ ] Commented hard-to-understand areas
@@ -34,12 +39,15 @@
 - [ ] Any dependent changes have been merged
 
 ## Screenshots / recordings
+
 <!-- If visual, attach before/after. -->
 
 ## Related issues
+
 <!-- Closes #123, fixes #456, refs #789 -->
 
 ## Checklist for reviewers
+
 - [ ] Logic is correct
 - [ ] Edge cases handled
 - [ ] Tests are sufficient

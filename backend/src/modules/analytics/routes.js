@@ -108,12 +108,10 @@ async function routes(fastify) {
           [req.user.id]
         );
         if (!rows[0]?.department_id) {
-          return reply
-            .status(403)
-            .send({
-              error: 'Forbidden',
-              message: 'You must belong to a department to view trends',
-            });
+          return reply.status(403).send({
+            error: 'Forbidden',
+            message: 'You must belong to a department to view trends',
+          });
         }
         // Senior_TL can only see their own department; explicit overrides ignored.
         scopedDeptId = rows[0].department_id;

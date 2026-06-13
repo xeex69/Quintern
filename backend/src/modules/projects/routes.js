@@ -395,14 +395,12 @@ async function routes(fastify) {
         return reply
           .status(400)
           .send({ error: 'Bad Request', details: parsed.error.format() });
-      return reply
-        .status(201)
-        .send(
-          await repo.addRisk(req.params.id, {
-            ...parsed.data,
-            raised_by: req.user.id,
-          })
-        );
+      return reply.status(201).send(
+        await repo.addRisk(req.params.id, {
+          ...parsed.data,
+          raised_by: req.user.id,
+        })
+      );
     }
   );
 

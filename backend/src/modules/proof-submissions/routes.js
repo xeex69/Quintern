@@ -46,11 +46,9 @@ async function routes(fastify) {
       const buffer = await data.toBuffer();
       const ext = detectImageExt(buffer);
       if (!ext) {
-        return reply
-          .status(400)
-          .send({
-            error: 'File content does not match a supported image format',
-          });
+        return reply.status(400).send({
+          error: 'File content does not match a supported image format',
+        });
       }
 
       const filename = uuidv4() + ext;

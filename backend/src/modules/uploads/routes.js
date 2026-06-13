@@ -62,11 +62,9 @@ async function routes(fastify) {
     // Magic-bytes check — don't trust the Content-Type or extension.
     const ext = detectImageExt(buffer);
     if (!ext) {
-      return reply
-        .status(400)
-        .send({
-          error: 'File content does not match a supported image format',
-        });
+      return reply.status(400).send({
+        error: 'File content does not match a supported image format',
+      });
     }
 
     const fileName = `avatar_${req.user.id}_${crypto.randomBytes(8).toString('hex')}${ext}`;
