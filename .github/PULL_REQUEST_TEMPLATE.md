@@ -1,4 +1,4 @@
-# InternOps · Pull Request
+# Quintern · Pull Request
 
 ## Summary
 

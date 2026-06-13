@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # =============================================================================
-#  InternOps · Single-script infrastructure control
-# =============================================================================
-#  This is the ONLY script your team needs to start, stop, inspect, test, and
-#  demo the entire InternOps stack. It wraps Docker Compose and adds the glue
+#  Quintern · Single-script infrastructure control
+#
+#  InternOps.sh is the single entry point used to install, run, test, and
+#  demo the entire Quintern stack. It wraps Docker Compose and adds the glue
 #  the Compose files don't: secrets bootstrap, migrations, seed, health checks,
 #  AI-provider diagnostics, test runners, and a pretty status output.
 #
@@ -84,8 +84,8 @@ COMPOSE_FILES=()
 banner() {
   cat <<'BANNER' | sed 's/^/  /'
   ┌──────────────────────────────────────────────────────────────┐
-  │  ▄▄▄▄▄▄ ▄▄▄▄▄▄ ▄▄▄▄▄▄ ▄▄▄▄▄   Uptoskills · InternOps          │
-  │  █▀▀▀▀█ █▀▀▀▀█ █▀▀▀▀█ █▀▀▀▀   Workforce operations           │
+  │  ▄▄▄▄▄▄ ▄▄▄▄▄▄ ▄▄▄▄▄▄ ▄▄▄▄▄   Quintern                       │
+  │  █▀▀▀▀█ █▀▀▀▀█ █▀▀▀▀█ █▀▀▀▀   5-tier cohort operations       │
   │  █   █  █   █  █▄▄▄▄█ █▄▄▄▄   one command to start it all     │
   │  █▄▄▄▄█ █▄▄▄▄█ █▀▀▀▀▀█ █▀▀▀▀                               │
   │  █▀▀▀▀█ █   █  █▄▄▄▄▄█ █▀▀▀▀   $ internops.sh up              │
@@ -262,7 +262,7 @@ cmd_up() {
   cat <<DONE
 
   ${C_GREEN}┌──────────────────────────────────────────────────────────────┐${C_RESET}
-  ${C_GREEN}│  ${C_BOLD}The InternOps stack is up.${C_RESET}${C_GREEN}                                     │${C_RESET}
+  ${C_GREEN}│  ${C_BOLD}The Quintern stack is up.${C_RESET}${C_GREEN}                                     │${C_RESET}
   ${C_GREEN}│  Try:                                                        │${C_RESET}
   ${C_GREEN}│    ${C_DIM}\$${C_RESET} ${C_BOLD}./internops.sh status${C_RESET}${C_DIM}  # full health report${C_RESET}${C_GREEN}            │${C_RESET}
   ${C_GREEN}│    ${C_DIM}\$${C_RESET} ${C_BOLD}./internops.sh test${C_RESET}${C_DIM}   # run all 27 + 44 + 96 tests${C_RESET}${C_GREEN}      │${C_RESET}

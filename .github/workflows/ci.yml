@@ -1,4 +1,4 @@
-name: InternOps CI
+name: Quintern CI
 
 on:
   push:

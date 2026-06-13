@@ -1,12 +1,29 @@
-# InternOps
+# Quintern
 
-Enterprise Workforce Management and Intern Operations Platform
+**quin (5) + intern — a 5-tier cohort operations platform with AI-powered assistance.**
 
 [![License](https://img.shields.io/badge/License-Proprietary-blue?style=for-the-badge)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Fastify](https://img.shields.io/badge/Fastify-4.x-000000?style=for-the-badge&logo=fastify&logoColor=white)](https://fastify.dev/)
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+
+## What is Quintern?
+
+**Quintern** is a production-grade workforce and intern operations platform. The name fuses _quin_ (Latin for five) with _intern_ — a direct nod to the **5-tier cohort hierarchy** at the heart of the system: **Admin → Senior TL → TL → Captain → Intern**.
+
+It is a full suite for tracking attendance, performance ratings, social task assignments, proof verification, team meetings, notifications, and comprehensive audit logging — all gated by strict role-based access control with ownership validation.
+
+## Highlights
+
+- 🏛 **5-tier hierarchy** — Admin → Senior TL → TL → Captain → Intern, enforced end-to-end
+- 🤖 **Multi-provider AI assistant** — Groq → Gemini → DeepSeek → Anthropic → FastAPI → heuristic fallback
+- 📊 **6 attendance states, 1-10 ratings** (PRESENT, ABSENT, LEAVE, EXAM_LEAVE, HALF_DAY, WFH)
+- 🔐 **JWT + CSRF + role-based middleware** with audit logging
+- 📱 **Mobile-first responsive UI** — breakpoints 320 / 375 / 768 / 1024 / 1440 / 4K
+- 🐳 **Docker + Compose + one-command ops** via `./internops.sh up`
+- 🧪 **44 Jest tests + 96 E2E + 54 viewport audit + 27 audit v2** — all green
+- 🔄 **CI/CD** — GitHub Actions: Prettier Check, Quintern CI (test + smoke), tag-based Releases
 
 ## Table of Contents
 
@@ -50,9 +67,9 @@ Enterprise Workforce Management and Intern Operations Platform
 
 ## Executive Summary
 
-InternOps is a production-grade workforce management platform designed to streamline intern operations within structured hierarchies. It provides a full suite of tools for attendance tracking, performance ratings, social task assignments, proof verification, team meetings, notifications, and comprehensive audit logging. The system enforces strict role-based access control with ownership validation, ensuring data integrity and security across all levels of the organization.
+Quintern is a production-grade workforce management platform designed to streamline intern operations within structured hierarchies. It provides a full suite of tools for attendance tracking, performance ratings, social task assignments, proof verification, team meetings, notifications, and comprehensive audit logging. The system enforces strict role-based access control with ownership validation, ensuring data integrity and security across all levels of the organization.
 
-Built with a modern Node.js/Fastify backend and a React/Vite frontend, InternOps follows enterprise design patterns such as repository abstraction, middleware-based authorization, and raw SQL queries for optimal database performance. The platform is ready for integration with the Uptoskills ecosystem, with dedicated placeholder modules for future synchronization.
+Built with a modern Node.js/Fastify backend and a React/Vite frontend, Quintern follows enterprise design patterns such as repository abstraction, middleware-based authorization, and raw SQL queries for optimal database performance. The platform is ready for integration with the Uptoskills ecosystem, with dedicated placeholder modules for future synchronization.
 
 ## Key Features
 
@@ -72,7 +89,7 @@ Built with a modern Node.js/Fastify backend and a React/Vite frontend, InternOps
 
 ## System Architecture
 
-InternOps follows a monolithic backend with a separate React frontend, communicating via REST APIs. The backend is built on Fastify and uses raw SQL queries through the `pg` driver. Redis is optionally used for refresh token storage and can be enabled for production scaling.
+Quintern follows a monolithic backend with a separate React frontend, communicating via REST APIs. The backend is built on Fastify and uses raw SQL queries through the `pg` driver. Redis is optionally used for refresh token storage and can be enabled for production scaling.
 
 The architecture emphasizes:
 
@@ -283,8 +300,8 @@ Copy `.env.example` to `.env` and fill in the required values. The following var
 ## Installation
 
 ```bash
-git clone https://github.com/rajat-wyrm/InternOps.git
-cd InternOps
+git clone https://github.com/rajat-wyrm/Quintern.git
+cd Quintern
 cd backend && npm install
 cd ../frontend && npm install
 ```
