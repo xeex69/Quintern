@@ -154,6 +154,20 @@ app.register(require('./modules/projects/routes'), {
   prefix: '/api/projects',
 });
 
+app.register(require('./modules/stripe/routes'), {
+  prefix: '/api/stripe',
+});
+
+// ---- Real-time stats (Socket.IO) ----
+app.get('/api/realtime/stats', async (req, reply) => {
+  try {
+    const realtime = require('./modules/realtime/io');
+    return realtime.stats();
+  } catch {
+    return { connected: 0, sockets: 0, enabled: false };
+  }
+});
+
 app.get('/', async (req, reply) => {
   reply.redirect('/docs');
 });
@@ -304,6 +318,10 @@ const start = async () => {
     });
 
     initializeWebSocket(app.server);
+
+    // Socket.IO is now attached by initializeWebSocket (single instance).
+    // Expose a /api/realtime/stats endpoint via the realtime module.
+    app.log.info('Socket.IO ready (via realtime module)');
 
     console.log(`Server listening on port ${config.port}`);
   } catch (err) {

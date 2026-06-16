@@ -1,40 +1,34 @@
-﻿const { Server } = require('socket.io');
-const config = require('./config');
+﻿const config = require('./config');
+const realtime = require('./modules/realtime/io');
 
-let io = null;
-
+// NOTE: We no longer create a legacy Socket.IO server here — that caused a
+// conflict because both `new Server(server, ...)` instances raced on the same
+// HTTP upgrade. The realtime module owns the single Server instance now.
+// This file remains as a thin shim so the existing import sites
+// (`require('../../websocket')`) keep working.
 function initializeWebSocket(server) {
-  io = new Server(server, {
-    cors: {
-      origin: config.corsOrigin,
-      credentials: true,
-    },
-  });
-  io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
-    socket.on('authenticate', (token) => {
-      // verify JWT and join user room
-      try {
-        const { verifyAccessToken } = require('./utils/tokens');
-        const decoded = verifyAccessToken(token);
-        socket.join(`user_${decoded.id}`);
-        socket.userId = decoded.id;
-      } catch (err) {}
-    });
-    socket.on('disconnect', () => {
-      console.log('Client disconnected:', socket.id);
-    });
-  });
-  return io;
+  try {
+    realtime.attach(server);
+  } catch (e) {
+    console.warn('realtime.attach failed', e.message);
+  }
+  return realtime.getIo();
 }
 
 function getIO() {
-  return io;
+  return realtime.getIo();
 }
 
 async function notifyUser(userId, event, data) {
-  if (!io) return;
-  io.to(`user_${userId}`).emit(event, data);
+  try {
+    realtime.emitToUser(userId, event, data);
+  } catch {}
 }
 
-module.exports = { initializeWebSocket, getIO, notifyUser };
+function broadcast(event, payload) {
+  try {
+    realtime.broadcast(event, payload);
+  } catch {}
+}
+
+module.exports = { initializeWebSocket, getIO, notifyUser, broadcast };
